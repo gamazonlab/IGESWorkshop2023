@@ -1,4 +1,4 @@
-# IGESWorkshop2023  
+# IGESWorkshop2023 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/gamazonlab/IGESWorkshop2023/blob/main/LICENSE)
 
 ## Abstract
 
