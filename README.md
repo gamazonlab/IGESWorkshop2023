@@ -8,7 +8,7 @@ Single-cell technologies are transforming our understanding of complex biologica
 
 Workshop participants will have a working knowledge of R and must have RStudio and the Seurat library installed.  
 
-### Speakers
+### Presentations
 
 Dr. Eric R. Gamazon is broadly interested in genomics, computational biology, machine learning, and genetic medicine. He is a faculty member of the Vanderbilt Genetics Institute and leads an interdisciplinary laboratory of computational scientists and molecular biologists. An ongoing project involves understanding gene regulation across tissues and cell types to gain insights into disease mechanisms and therapeutic targets. He served as a co-chair of the GWAS Working Group of the Genotype-Tissue Expression (GTEx) project. He was a recipient of a Genomic Innovator Award (2019) from the National Institutes of Health and is a Life Member of Clare Hall, University of Cambridge.  
 
