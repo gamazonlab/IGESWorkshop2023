@@ -8,6 +8,12 @@ Single-cell technologies are transforming our understanding of complex biologica
 
 Workshop participants will have a working knowledge of R and must have RStudio and the Seurat library installed.  
 
+### Speakers
+
+Dr. Eric R. Gamazon is broadly interested in genomics, computational biology, machine learning, and genetic medicine. He is a faculty member of the Vanderbilt Genetics Institute and leads an interdisciplinary laboratory of computational scientists and molecular biologists. An ongoing project involves understanding gene regulation across tissues and cell types to gain insights into disease mechanisms and therapeutic targets. He served as a co-chair of the GWAS Working Group of the Genotype-Tissue Expression (GTEx) project. He was a recipient of a Genomic Innovator Award (2019) from the National Institutes of Health and is a Life Member of Clare Hall, University of Cambridge.  
+
+Hanna Abe is a PhD student in the Human Genetics program at Vanderbilt University. She is completing her graduate thesis on genetic regulation of gene expression across DNA variants and functional contexts. Her research interests lie in the fields of single-cell biology, computational biology, and statistical genetics. Her work involves the development of cell-type specific genetic models to characterize the dynamics of gene expression regulation.  
+
 Symphony I, Loews Hotel  
 November 5, 2023   
 3:00p - 4:30p  
