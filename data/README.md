@@ -9,3 +9,7 @@ Link to the individual level matrices 👉 https://data.humancellatlas.org/explo
 The original dataset consists scRNAseq collected from fatal covid cases (n=19) and controls (n=7).
 For the purpose of this workshop, the dataset has been subsetted to 3 samples that were randomly selected for each condition (covid & normal).The donor IDs for the selected controls are : C51ctr , C53ctr and C56ctr. 
 The donorIDs for the covid cases are L11cov, L22cov and L07cov.
+
+In the data folder, please find the following datasets that are needed for the workshop. 
+"covid.iges.rds" --> the raw count matrices for the subsetted samples
+"meta_data_covid.txt" --> meta data for the above samples
