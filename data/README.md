@@ -15,4 +15,4 @@ In the data folder, please find the following datasets that are needed for the w
 "covid.iges.rds" --> the raw count matrices for the subsetted samples
 
 
-"meta_data_covid.txt" --> meta data for the above samples
+"meta_data_covid.txt" --> meta data for the samples
