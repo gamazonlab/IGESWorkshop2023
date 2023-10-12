@@ -12,7 +12,8 @@ The donorIDs for the covid cases are L11cov, L22cov and L07cov.
 
 In the data folder, please find the following datasets that are needed for the workshop. 
 
-"covid.iges.rds" --> the raw count matrices for the subsetted samples
+"control.count.matrices.txt.tar.gz" --> the raw count matrices for the  control samples
 
+"cases.count.matrices.txt.tar.gz" --> the raw count matrices for the covid case samples
 
-"meta_data_covid.txt" --> meta data for the samples
+"meta_data_covid.txt" --> meta data for both the covid and control samples
