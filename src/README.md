@@ -1,4 +1,4 @@
-# Tutorial workshop goals:
+# Workshop goals:
 
 The following tutorial is designed to give an overview of single cell sequencing data analyses using the Seurat software procedure. 
 Here, we address three main goals:
