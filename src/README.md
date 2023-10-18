@@ -17,13 +17,13 @@ There are two different differential expression analysis:
       - Between clusters
       - Between experimental conditions
 
-## Differential expression between clusters
+### Differential expression between clusters
 This refers to finding the specific genes that are differentially expressed between clusters and allows identification of cell type markers that will be used for labeling.
 
-## Differential expression between conditions
+### Differential expression between conditions
 In this case, the goal is to identify those genes that are differentially expression between two experimental conditions such as (stimulated vs unstimulated cells) or between disease cases (covid) and healthy controls in specific cell type. 
 
 ## Gene Set Analysis
-To learn more about function of the differentially expressed genes identified above, you can do gene set analysis by using hypergeometric enrichment test.
+To learn more about function of the differentially expressed genes identified above, you can do gene set analysis by using hypergeometric enrichment test.In this case, we use this method to get the combined function of the DEGs between covid and control patients. 
 
 
