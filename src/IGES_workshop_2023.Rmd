@@ -1,0 +1,302 @@
+---
+title: "IGES_sc_workshop"
+output: html_document
+date: "2023-11-05"
+---
+# Tutorial goals:
+
+The following tutorial is designed to give an overview of data analyses using single cell sequencing datasets using the Seurat procedure. 
+Here, we address three main goals:
+
+- Perform QC analysis as well as dimensionality reduction
+- Identify cell types markers and cell type clusters that are present in both datasets
+- Compare the datasets to find cell-type and condition specific signatures
+
+# Download single cell raw count matrices
+The original data is collected from this paper - Melms, J.C., Biermann, J., Huang, H. et al. A molecular single-cell lung atlas of lethal COVID-19. Nature 595, 114–119 (2021). https://doi.org/10.1038/s41586-021-03569-1
+
+N.B.For this workshop, we have subsetted the control(C51ctr,C53ctr,C56ctr) & cases(L11cov, L22cov, L07cov) samples. 
+Please download the smaller dataset and metadata from: https://github.com/gamazonlab/IGESWorkshop2023.git
+Once downloaded onto local computer, create a folder, move the files to the folder andunzip them. 
+
+```{r, message=FALSE}
+# Load libraries
+# If not already installed, please install first 
+
+library(Seurat)
+library(data.table)
+library(dplyr)
+library(patchwork)
+library(cowplot)
+library(patchwork)
+library(multtest)
+library(metap)
+library(ggplot2)
+library(enrichR)
+```
+
+Read in the count matrices for both cases and control samples
+```{r, message=FALSE}
+# change to data.frames and merge the two tables 
+cases <- fread("cases.count.matrix.txt")
+cases <- as.data.frame(cases)
+row.names(cases) <- cases$V1
+cases <- cases[,-c(1)] 
+
+controls <- fread("control.count.matrices.txt")
+controls <- controls[,-c(1)]
+controls <- as.data.frame(controls)
+tot <- cbind(cases, controls)
+
+dim(tot)
+tot[1:3, 1:3] 
+
+```
+
+Transform the count matrix to a Seurat object
+```{r}
+# change to Seurat object
+data <- CreateSeuratObject(counts = tot, project = "covid") # assign project name
+
+# read in meta data
+meta <- read.table("./meta/meta_data_subsetted.txt", h=T, sep="\t")
+
+data <- AddMetaData(data, meta) # add the meta data to the data seurat object
+data <- subset(data, subset = nFeature_RNA > 200) # remove low-quality cells with very few genes
+data
+```
+
+Add a mitochondrial QC metric to meta.data
+```{r}
+data[["percent.mt"]] <- PercentageFeatureSet(data, pattern = "^MT-")
+
+# Visualize QC metrics as a violin plot
+VlnPlot(data, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+```
+
+```{r}
+# FeatureScatter is typically used to visualize feature-feature relationships, but can be used
+# for anything calculated by the object, i.e. columns in object metadata, PC scores etc.
+
+plot1 <- FeatureScatter(data, feature1 = "nCount_RNA", feature2 = "percent.mt")
+plot2 <- FeatureScatter(data, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+plot1 + plot2
+
+
+```
+### Quality control
+
+Cell level and gene level
+
+- Gene (transcript) level
+    - Removal of genes that are not expressed in more than a few cells
+    - Dropouts
+- Cell level
+    - Number of counts per barcode (count depth)
+    - Number of genes per barcode (doublets)
+    - Fraction of counts from mitochondrial genes per barcode (dying cells)
+    
+We filter cells that have unique feature counts over 2,500 or less than 200
+We filter cells that have >5% mitochondrial count
+
+```{r}
+data <- subset(data, subset = nFeature_RNA > 200 & nFeature_RNA < 2500 & percent.mt < 5)
+data
+```
+
+# Data Normalization
+Count depth scaling (counts per million CPM) normalization
+Log transformation
+```{r}
+# normalization of feature expression measurement for each cell by total expression 
+# then multiplied by scale factor (10k by default) and log-transformed
+
+data <- NormalizeData(data, normalization.method = "LogNormalize", scale.factor = 10000)
+
+```
+# Identifying highly variable features
+
+```{r}
+data <- FindVariableFeatures(data, selection.method = "vst", nfeatures = 2000)
+
+# Identify the 10 most highly variable genes
+top10 <- head(VariableFeatures(data), 10)
+
+# plot variable features with and without labels
+plot1 <- VariableFeaturePlot(data)
+plot2 <- LabelPoints(plot = plot1, points = top10, repel = TRUE)
+plot2
+```
+
+# Scaling the data:a standard pre-processing step prior to dimensional reduction techniques
+```{r}
+all.genes <- rownames(data)
+data <- ScaleData(data, features = all.genes)
+
+```
+
+# Linear dimnesion reduction 
+## To reduce noise and facilitate visualization. 
+```{r}
+data <- RunPCA(data, features = VariableFeatures(object = data))
+DimPlot(data, reduction = "pca")
+ElbowPlot(data)
+```
+# Cluster cells
+## Groups similar cells based on their transcriptomics
+## Using modularity optimization techniques such as the Louvain algorithm (default) 
+```{r}
+data <- FindNeighbors(data, dims = 1:10)
+data <- FindClusters(data, resolution = 0.5)
+```
+# Non-linear dimensional reduction (UMAP/tSNE)
+##To learn the underlying manifold of the data in order to place similar cells together in low-dimensional space
+```{r}
+# If you haven't installed UMAP, you can do so via reticulate::py_install(packages ='umap-learn')
+data <- RunUMAP(data, dims = 1:10)
+
+# note that you can set `label = TRUE` or use the LabelClusters function to help label
+# individual clusters
+DimPlot(data, reduction = "umap")
+
+# stopping point (save the clustered data)
+#saveRDS(data, file = "./data_clustered.rds")
+```
+# Post-clustering analysis
+One approach after clustering is to perform differential expression analysis.
+There are two different differential expression analysis:
+      - Between clusters
+      - Between experimental conditions
+
+## Differential expression between clusters
+Finding the specific genes that are differentially expressed between cell type clusters allows identification of markers. Seurat has inbuilt functions to find these gene markers, which can help in labeling of the clusters.
+
+The function "FindMarkers" will help in identifying the differentially expressed genes in a cell type cluster. 
+```{r}
+# for example: find all markers of cluster 2
+cluster2.markers <- FindMarkers(data, ident.1 = 2, min.pct = 0.25)
+head(cluster2.markers, n = 5)
+```
+
+VlPlot and FeaturePlot can help visualize localization of marker genes with clusters
+```{r}
+VlnPlot(data, features = c("TMEM51", "C1QA"))
+FeaturePlot(data, features = c("TMEM51", "C1QA", "THEMIS2", "LAPTM5"))
+
+```
+Find Markers for all cell type clusters
+```{r,message=FALSE}
+# find markers for every cluster compared to all remaining cells, report only the positive
+# ones
+data.markers <- FindAllMarkers(data, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+data.markers %>%
+    group_by(cluster) %>%
+    slice_max(n = 2, order_by = avg_log2FC)
+
+```
+
+### Assigning cell type identity to clusters
+Once cell type clusters and marker genes are identified, we can assign labels to cell types. 
+At this point, there is no inbuilt cell type labeling in Seurat, so this step is done manually.
+💡 The database CellMarker has manually curated gene markers and cell annotations. 
+Link: http://xteam.xbio.top/CellMarker/search.jsp?cellMarkerSpeciesType=Human&cellMarker=ELN
+
+```{r}
+# For this workshop, the cell clusters have already been labeled
+DimPlot(object = data, 
+        reduction = "umap", 
+        group.by = "cell_type_main")
+
+```
+
+## Differential expression between conditions
+In this case, the goal is to identify those genes that are differentially expression between two experimental conditions such as (stimulated vs unstimulated cells) or between disease cases and healthy controls in specific cell type. However, having only 3 patients is probably too low, with many more patients it will work better to run pseudobulk analysis.
+
+So another way to look broadly at these changes is to plot the average expression of both the covid and control cells and look for genes that are visual outliers on a scatter plot. Here, we take the average expression of both the covid and control naive T cells and B cell populations and generate the scatter plots, highlighting genes that exhibit dramatic responses to disease condition.
+To visualize the two disease conditions side-by-side, we can use the split.by argument to show each condition colored by cluster.
+
+```{r}
+# plot this clustering
+plot_grid(ncol = 2, DimPlot(data, label = T) + NoAxes(), DimPlot(data, group.by = "disease") + NoAxes())
+```
+
+First we subset our data for the desired cell cluster, then change the cell identities to the variable of comparison (which now in our case is the “disease”, e.g. Covid/Ctrl).❗️Since we are using the same expression data to do cell type marker identification and differential expression, this is prone to double dipping. If you want to learn more about how to resolve this issue, Link : https://doi.org/10.21203/rs.3.rs-3211191/v1
+
+```{r}
+# select all cells in cluster 1
+cell_selection <- subset(data, seurat_clusters == 2)
+cell_selection <- SetIdent(cell_selection, value = "disease")
+# Compute differential expression
+DGE_cell_selection <- FindAllMarkers(cell_selection, log2FC.threshold = 0.2, test.use = "wilcox",
+    min.pct = 0.1, min.diff.pct = 0.2, only.pos = TRUE, max.cells.per.ident = 50,
+    assay = "RNA")
+
+```
+
+❗️Imbalanced sex in the subjects can introduce bias during DEG analysis. Make sure to remove if data is available for sex chromosome related genes.
+```{r}
+DGE_cell_selection %>%
+    group_by(cluster) %>%
+    top_n(-5, p_val) -> top5_cell_selection
+
+VlnPlot(cell_selection, features = as.character(unique(top5_cell_selection$gene)),
+    ncol = 5, group.by = "disease", assay = "RNA", pt.size = 0.1)
+```
+
+## Batch effects
+When testing DEG across conditions,sample differences can create a bias. So first, lets check how the top DGEs are expressed across the individuals:
+```{r}
+VlnPlot(cell_selection, group.by = "rds.biosample_id", features = as.character(unique(top5_cell_selection$gene)),
+    ncol = 5, assay = "RNA", pt.size = 0)
+
+```
+
+❗️It happens here, that many of the genes are evenly expressed across samples. In the case that DEG results are dominated by single sample, one approach is to downsample Seurat function to make sure that every sample has the same number of cells.
+
+Plot as dotplot, for whole the dataset:
+```{r}
+# Define as Covid or Ctrl in the df and add a gene column
+DGE_cell_selection$direction = ifelse(DGE_cell_selection$avg_log2FC > 0, "Covid",
+    "Ctrl")
+DGE_cell_selection$gene = rownames(DGE_cell_selection)
+
+DGE_cell_selection %>%
+    group_by(direction) %>%
+    top_n(-20, p_val) -> top20_cell_selection
+DotPlot(cell_selection, features = rev(as.character(unique(top20_cell_selection$gene))),
+    group.by = "rds.biosample_id", assay = "RNA") + coord_flip()
+
+```
+
+
+# Gene Set Analysis
+If interested in checking the function of the differentially expressed genes identified above, you can use hypergeometric enrichment test
+```{r}
+
+# Check available databases to perform enrichment (then choose one)
+enrichR::listEnrichrDbs()
+
+# Perform enrichment
+enrich_results <- enrichr(genes = DGE_cell_selection$gene[DGE_cell_selection$avg_log2FC >
+    0], databases = "GO_Biological_Process_2017b")[[1]]
+
+# Visualize your results using a simple barplot
+par(mfrow = c(1, 1), mar = c(3, 25, 2, 1))
+barplot(height = -log10(enrich_results$P.value)[10:1], names.arg = enrich_results$Term[10:1],
+    horiz = TRUE, las = 1, border = FALSE, cex.names = 0.6)
+abline(v = c(-log10(0.05)), lty = 2)
+abline(v = 0, lty = 1)
+
+```
+
+# Session Info
+
+```{r}
+sessionInfo()
+```
+
+
+
+
+
+
