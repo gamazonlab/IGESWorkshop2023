@@ -15,7 +15,7 @@ Here, we address three main goals:
 # Download single cell raw count matrices
 The original data is collected from this paper - Melms, J.C., Biermann, J., Huang, H. et al. A molecular single-cell lung atlas of lethal COVID-19. Nature 595, 114–119 (2021). https://doi.org/10.1038/s41586-021-03569-1
 
-N.B.For this workshop, we have subsetted the control(C51ctr,C53ctr,C56ctr) & cases(L11cov, L22cov, L07cov) samples. 
+N.B.For this workshop, we have subsetted the control(C51ctr and C53ctr) & cases(L11cov, L22cov, L07cov) samples. 
 Please download the smaller dataset and metadata from: https://github.com/gamazonlab/IGESWorkshop2023.git
 Once downloaded onto local computer, create a folder, move the files to the folder andunzip them. 
 
