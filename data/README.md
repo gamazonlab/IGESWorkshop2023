@@ -1,4 +1,4 @@
-#README
+# README
 
 The data used in the workshop can be downloaded from the paper "A molecular single-cell lung atlas of lethal COVID-19". 
 
