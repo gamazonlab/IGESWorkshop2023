@@ -14,8 +14,8 @@ Here, we address three main goals:
 # Post-clustering analysis
 One approach after clustering is to perform differential expression analysis(DEG).
 There are two different differential expression analysis:
-      - Between clusters
-      - Between experimental conditions
+      1) Between clusters
+      2) Between experimental conditions
 
 ### Differential expression between clusters
 This refers to finding the specific genes that are differentially expressed between clusters and allows identification of cell type markers that will be used for labeling.
