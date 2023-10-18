@@ -18,7 +18,7 @@ There are two different types of differential expression analysis:
       2) Between experimental conditions
 
 ### Differential expression between clusters
-This refers to finding the specific genes that are differentially expressed between clusters and allows identification of cell type markers that will be used for labeling.
+This refers to finding the specific genes that are differentially expressed between clusters and allows identification of cell-type markers that will be used for labeling.
 
 ### Differential expression between conditions
 In this case, the goal is to identify those genes that are differentially expressed between two experimental conditions such as (stimulated vs unstimulated cells) or between disease cases (e.g., COVID-19) and healthy controls in a specific cell type. 
