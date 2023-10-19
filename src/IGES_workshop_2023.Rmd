@@ -5,19 +5,19 @@ date: "2023-11-05"
 ---
 # Tutorial goals:
 
-The following tutorial is designed to give an overview of data analyses using single cell sequencing datasets using the Seurat procedure. 
+The following tutorial is designed to give an overview of single-cell sequencing data analyses.  We will illustrate the pipeline using the Seurat software. 
 Here, we address three main goals:
 
 - Perform QC analysis as well as dimensionality reduction
-- Identify cell types markers and cell type clusters that are present in both datasets
-- Compare the datasets to find cell-type and condition specific signatures
+- Identify cell-type markers and clusters
+- Compare datasets to find cell-type and condition-specific signatures
 
 # Download single cell raw count matrices
-The original data is collected from this paper - Melms, J.C., Biermann, J., Huang, H. et al. A molecular single-cell lung atlas of lethal COVID-19. Nature 595, 114–119 (2021). https://doi.org/10.1038/s41586-021-03569-1
+The original data can be downloaded from this paper - Melms, J.C., Biermann, J., Huang, H. et al. A molecular single-cell lung atlas of lethal COVID-19. Nature 595, 114–119 (2021). https://doi.org/10.1038/s41586-021-03569-1
 
-N.B.For this workshop, we have subsetted the control(C51ctr and C53ctr) & cases(L11cov, L22cov, L07cov) samples. 
+N.B.For this workshop, we have subsetted the control (C51ctr and C53ctr) & cases (L11cov, L22cov, L07cov) samples. 
 Please download the smaller dataset and metadata from: https://github.com/gamazonlab/IGESWorkshop2023.git
-Once downloaded onto local computer, create a folder, move the files to the folder andunzip them. 
+Once downloaded onto a local computer, create a folder, move the files to the folder and unzip them. 
 
 ```{r, message=FALSE}
 # Load libraries
@@ -163,13 +163,13 @@ DimPlot(data, reduction = "umap")
 #saveRDS(data, file = "./data_clustered.rds")
 ```
 # Post-clustering analysis
-One approach after clustering is to perform differential expression analysis.
-There are two different differential expression analysis:
+One post-clustering approach is to perform differential expression analysis.
+There are two types of differential expression analysis:
       - Between clusters
       - Between experimental conditions
 
 ## Differential expression between clusters
-Finding the specific genes that are differentially expressed between cell type clusters allows identification of markers. Seurat has inbuilt functions to find these gene markers, which can help in labeling of the clusters.
+Finding the specific genes that are differentially expressed between cell-type clusters allows identification of markers. Seurat has builtin functions to find these gene markers, which can help in labeling of the clusters.
 
 The function "FindMarkers" will help in identifying the differentially expressed genes in a cell type cluster. 
 ```{r}
@@ -196,8 +196,8 @@ data.markers %>%
 ```
 
 ### Assigning cell type identity to clusters
-Once cell type clusters and marker genes are identified, we can assign labels to cell types. 
-At this point, there is no inbuilt cell type labeling in Seurat, so this step is done manually.
+Once cell-type clusters and marker genes are identified, we can assign labels to cell types. 
+At this point, there is no builtin cell type labeling in Seurat, so this step is done manually.
 💡 The database CellMarker has manually curated gene markers and cell annotations. 
 Link: http://xteam.xbio.top/CellMarker/search.jsp?cellMarkerSpeciesType=Human&cellMarker=ELN
 
@@ -210,7 +210,7 @@ DimPlot(object = data,
 ```
 
 ## Differential expression between conditions
-In this case, the goal is to identify those genes that are differentially expression between two experimental conditions such as (stimulated vs unstimulated cells) or between disease cases and healthy controls in specific cell type. However, having only 3 patients is probably too low, with many more patients it will work better to run pseudobulk analysis.
+In this case, the goal is to identify those genes that are differentially expressed between two experimental conditions such as (stimulated vs unstimulated cells) or between disease cases and healthy controls in a specific cell type. However, having only 3 patients is probably too low, with many more patients, it will work better to run pseudobulk analysis.
 
 So another way to look broadly at these changes is to plot the average expression of both the covid and control cells and look for genes that are visual outliers on a scatter plot. Here, we take the average expression of both the covid and control naive T cells and B cell populations and generate the scatter plots, highlighting genes that exhibit dramatic responses to disease condition.
 To visualize the two disease conditions side-by-side, we can use the split.by argument to show each condition colored by cluster.
@@ -251,7 +251,7 @@ VlnPlot(cell_selection, group.by = "rds.biosample_id", features = as.character(u
 
 ```
 
-❗️It happens here, that many of the genes are evenly expressed across samples. In the case that DEG results are dominated by single sample, one approach is to downsample Seurat function to make sure that every sample has the same number of cells.
+❗️It happens here, that many of the genes are evenly expressed across samples. In the case that DEG results are dominated by a single sample, one approach is to downsample Seurat function to make sure that every sample has the same number of cells.
 
 Plot as dotplot, for whole the dataset:
 ```{r}
