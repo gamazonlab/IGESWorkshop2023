@@ -20,17 +20,24 @@ Please download the smaller dataset and metadata from: https://github.com/gamazo
 Once downloaded onto a local computer, create a folder, move the files to the folder and unzip them. 
 
 ```{r, message=FALSE}
-# Load libraries
 # If not already installed, please install first 
+install.packages('Seurat')
+install.packges('data.table')
+install.packages('dplyr')
+install.packages('patchwork')
+install.packages('enrichR')
+install.packages('ggplot2')
+install.packages('cowplot')
+```
 
+
+```{r, message=FALSE}
+# Load libraries
 library(Seurat)
 library(data.table)
 library(dplyr)
 library(patchwork)
 library(cowplot)
-library(patchwork)
-library(multtest)
-library(metap)
 library(ggplot2)
 library(enrichR)
 ```
@@ -59,7 +66,7 @@ Transform the count matrix to a Seurat object
 data <- CreateSeuratObject(counts = tot, project = "covid") # assign project name
 
 # read in meta data
-meta <- read.table("./meta/meta_data_subsetted.txt", h=T, sep="\t")
+meta <- read.table("./meta_data_covid.txt", h=T, sep="\t")
 
 data <- AddMetaData(data, meta) # add the meta data to the data seurat object
 data <- subset(data, subset = nFeature_RNA > 200) # remove low-quality cells with very few genes
