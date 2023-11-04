@@ -45,6 +45,7 @@ library(enrichR)
 Read in the count matrices for both cases and control samples
 ```{r, message=FALSE}
 # change to data.frames and merge the two tables 
+setwd("/Users/***/Desktop/IGESWorkshop2023-main/")
 cases <- fread("cases.count.matrix.txt")
 cases <- as.data.frame(cases)
 row.names(cases) <- cases$V1
@@ -62,14 +63,15 @@ tot[1:3, 1:3]
 
 Transform the count matrix to a Seurat object
 ```{r}
+setwd("/Users/a***/Desktop/IGESWorkshop2023-main/data/")
+
 # change to Seurat object
 data <- CreateSeuratObject(counts = tot, project = "covid") # assign project name
 
 # read in meta data
 meta <- read.table("./meta_data_covid.txt", h=T, sep="\t")
-
-data <- AddMetaData(data, meta) # add the meta data to the data seurat object
 data <- subset(data, subset = nFeature_RNA > 200) # remove low-quality cells with very few genes
+data <- AddMetaData(data, meta) # add the meta data to the data seurat object
 data
 ```
 
