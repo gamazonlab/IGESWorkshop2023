@@ -8,8 +8,8 @@ Here, we address three main goals:
 
 
 # Single-cell data processing workflow
+<img width="959" alt="Screen Shot 2023-11-03 at 11 27 36 PM" src="https://github.com/gamazonlab/IGESWorkshop2023/assets/59617853/89d83866-81a4-4c50-a2f7-039ebeba2113">
 
-<img width="943" alt="Screen Shot 2023-10-12 at 10 59 05 PM" src="https://github.com/gamazonlab/IGESWorkshop2023/assets/59617853/5f93b165-6568-42da-b7ce-84304ed8fb4b">
 
 # Post-clustering analysis
 One post-clustering analysis is to perform differential expression analysis (DEG).
