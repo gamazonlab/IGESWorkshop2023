@@ -8,7 +8,7 @@ Here, we address three main goals:
 
 
 # Single-cell data processing workflow
-<img width="959" alt="Screen Shot 2023-11-03 at 11 27 36 PM" src="https://github.com/gamazonlab/IGESWorkshop2023/assets/59617853/89d83866-81a4-4c50-a2f7-039ebeba2113">
+<img width="966" alt="Screen Shot 2023-11-03 at 11 28 50 PM" src="https://github.com/gamazonlab/IGESWorkshop2023/assets/59617853/13dee374-cd75-4b92-bded-14d1b6effb1e">
 
 
 # Post-clustering analysis
