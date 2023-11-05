@@ -22,7 +22,7 @@ Once downloaded onto a local computer, create a folder, move the files to the fo
 ```{r, message=FALSE}
 # If not already installed, please install first 
 install.packages('Seurat')
-install.packges('data.table')
+install.packages('data.table')
 install.packages('dplyr')
 install.packages('patchwork')
 install.packages('enrichR')
