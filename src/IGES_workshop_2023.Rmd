@@ -219,8 +219,7 @@ DimPlot(object = data,
 ## Differential expression between conditions
 In this case, the goal is to identify those genes that are differentially expressed between two experimental conditions such as (stimulated vs unstimulated cells) or between disease cases and healthy controls in a specific cell type. However, having only 3 patients is probably too low, with many more patients, it will work better to run pseudobulk analysis.
 
-So another way to look broadly at these changes is to plot the average expression of both the covid and control cells and look for genes that are visual outliers on a scatter plot. Here, we take the average expression of both the covid and control naive T cells and B cell populations and generate the scatter plots, highlighting genes that exhibit dramatic responses to disease condition.
-To visualize the two disease conditions side-by-side, we can use the split.by argument to show each condition colored by cluster.
+So another way to look broadly at these changes is to plot the average expression of both the covid and control cells and look for genes that are visual outliers on a scatter plot. To visualize the two disease conditions side-by-side, we can use the split.by argument to show each condition colored by cluster.
 
 ```{r}
 # plot this clustering
