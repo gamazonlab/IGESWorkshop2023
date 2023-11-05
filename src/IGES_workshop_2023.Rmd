@@ -256,7 +256,7 @@ VlnPlot(cell_selection, group.by = "rds.biosample_id", features = as.character(u
 
 ```
 
-❗️It happens here, that many of the genes are evenly expressed across samples. In the case that DEG results are dominated by a single sample, one approach is to downsample Seurat function to make sure that every sample has the same number of cells.
+❗️It happens here, that many of the genes are evenly expressed across samples. In the case that DEG results are dominated by a single sample, one approach is to use "downsample" Seurat function to make sure that every sample has the same number of cells.
 
 Plot as dotplot, for whole the dataset:
 ```{r}
