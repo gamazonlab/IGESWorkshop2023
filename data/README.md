@@ -17,3 +17,5 @@ In the data folder of this repository, please find the following datasets that a
 "cases.count.matrices.txt.tar.gz" --> the raw count matrices for the COVID-19 case samples
 
 "meta_data_covid.txt" --> metadata for both the COVID-19 and control samples
+
+N.B. For window users - please use link : https://www.dropbox.com/scl/fo/ofv0839dpw9qlw9hregnz/h?rlkey=6e6lpjsncygc7jyjr5le2la7l&dl=0
