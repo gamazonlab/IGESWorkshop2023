@@ -63,8 +63,6 @@ tot[1:3, 1:3]
 
 Transform the count matrix to a Seurat object
 ```{r}
-setwd("/Users/a***/Desktop/IGESWorkshop2023-main/data/")
-
 # change to Seurat object
 data <- CreateSeuratObject(counts = tot, project = "covid") # assign project name
 
