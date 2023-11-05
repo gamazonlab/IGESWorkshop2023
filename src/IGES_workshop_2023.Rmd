@@ -229,7 +229,7 @@ plot_grid(ncol = 2, DimPlot(data, label = T) + NoAxes(), DimPlot(data, group.by 
 First we subset our data for the desired cell cluster, then change the cell identities to the variable of comparison (which now in our case is the “disease”, e.g. Covid/Ctrl).❗️Since we are using the same expression data to do cell type marker identification and differential expression, this is prone to double dipping. If you want to learn more about how to resolve this issue, Link : https://doi.org/10.21203/rs.3.rs-3211191/v1
 
 ```{r}
-# select all cells in cluster 1
+# select all cells in cluster 2
 cell_selection <- subset(data, seurat_clusters == 2)
 cell_selection <- SetIdent(cell_selection, value = "disease")
 # Compute differential expression
