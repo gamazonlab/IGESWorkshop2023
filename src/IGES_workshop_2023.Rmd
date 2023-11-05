@@ -239,7 +239,6 @@ DGE_cell_selection <- FindAllMarkers(cell_selection, log2FC.threshold = 0.2, tes
 
 ```
 
-❗️Imbalanced sex in the subjects can introduce bias during DEG analysis. Make sure to remove if data is available for sex chromosome related genes.
 ```{r}
 DGE_cell_selection %>%
     group_by(cluster) %>%
