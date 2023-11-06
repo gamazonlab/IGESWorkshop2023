@@ -142,7 +142,7 @@ data <- ScaleData(data, features = all.genes)
 
 ```
 
-# Linear dimnesion reduction 
+# Linear dimension reduction 
 ## To reduce noise and facilitate visualization. 
 ```{r}
 data <- RunPCA(data, features = VariableFeatures(object = data))
@@ -249,14 +249,14 @@ VlnPlot(cell_selection, features = as.character(unique(top5_cell_selection$gene)
 ```
 
 ## Batch effects
-When testing DEG across conditions,sample differences can create a bias. So first, lets check how the top DGEs are expressed across the individuals:
+When testing DEG across conditions, sample differences can create a bias. So first, let's check how the top DGEs are expressed across the individuals:
 ```{r}
 VlnPlot(cell_selection, group.by = "rds.biosample_id", features = as.character(unique(top5_cell_selection$gene)),
     ncol = 5, assay = "RNA", pt.size = 0)
 
 ```
 
-❗️It happens here, that many of the genes are evenly expressed across samples. In the case that DEG results are dominated by a single sample, one approach is to use "downsample" Seurat function to make sure that every sample has the same number of cells.
+❗️It happens here, that many of the genes are evenly expressed across samples. In the case that DEG results are dominated by a single sample, one approach is to use the "downsample" Seurat function to make sure that every sample has the same number of cells.
 
 Plot as dotplot, for whole the dataset:
 ```{r}
