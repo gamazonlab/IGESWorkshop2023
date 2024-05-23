@@ -17,4 +17,4 @@ Hanna Abe is a PhD student in the Human Genetics program at Vanderbilt Universit
 Symphony I, Loews Hotel  
 November 5, 2023   
 3:00p - 4:30p  
-https://site.pheedloop.com/event/IGES2023/schedule/SES92S2AIEIHAWPLT  
+https://site.pheedloop.com/event/IGES2023/speakers/SPEJJBXGBLI 
